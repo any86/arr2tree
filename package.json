@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "terser src/index.js -c -o index.js",
-    "test": "node test.js"
+    "test": "npm run build && node test.js"
   },
   "repository": {
     "type": "git",

@@ -30,7 +30,8 @@ const comparedTree = [ { id: 1, name: '蔬菜', order: 1 },
 { id: 4, name: '水果', order: 2 } ];
 
 if(!isEqual(comparedTree, tree)){
-    throw '😿  测试不通过!'
+    console.log(JSON.stringify(tree,null,4));
+    throw '😿  测试不通过!';
 } else {
     console.log('🚀  通过测试!')
 }
