@@ -43,6 +43,9 @@ module.exports = function(array, keyMap = {
         if (0 >= nodeMap[key].length) continue;
         nodeMap[key].sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
     }
+    
+    tree.sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
+
 
     // 有循环引用, 手动销毁
     nodeMap = null;
