@@ -12,7 +12,8 @@
   },
   "scripts": {
     "build": "terser src/index.js -c -o index.js",
-    "test": "npm run build && node test.js"
+    "test": "npm run build && node test.js",
+    "release": "npm run test && npm version patch && npm pub"
   },
   "repository": {
     "type": "git",
