@@ -1,6 +1,6 @@
 {
   "name": "arr2tree",
-  "version": "0.0.1",
+  "version": "0.0.2-0",
   "description": "数组转树🌲",
   "main": "index.js",
   "devDependencies": {
