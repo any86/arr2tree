@@ -99,7 +99,7 @@ arr2tree(arr, {
     KEY_ID: 'xxid',
     KEY_PID: 'xxpid',
     KEY_ORDER: 'xxorder'
-}, callback:(node, isRoot)=>{
+}, (node, isRoot)=>{
     // code
 });
 ```
