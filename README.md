@@ -37,7 +37,6 @@ const array = [{
 // 🚀 开始转换
 arr2tree(array);
 
-
 // 🌲 输出:
 // 
 // [
@@ -67,4 +66,30 @@ arr2tree(array);
 //     }
 // ]
 
+```
+
+## 兼容不同的键值
+我们可以通过参数来兼容不同的业务下的键值:
+```javascript
+const arr = [{xxid:1, xxorder:1}, {xxid:2,xxpid:1,xxorder:2}];
+
+arr2tree(arr, {
+    KEY_ID: 'xxid',
+    KEY_PID: 'xxpid',
+    KEY_ORDER: 'xxorder'
+});
+```
+
+## 每次循环的钩子
+如果你需要获取每次循环的节点, 可以通过回调获取:
+```javascript
+const arr = [{xxid:1, xxorder:1}, {xxid:2,xxpid:1,xxorder:2}];
+
+arr2tree(arr, {
+    KEY_ID: 'xxid',
+    KEY_PID: 'xxpid',
+    KEY_ORDER: 'xxorder'
+}, callback:(node, isRoot)=>{
+    // code
+});
 ```
