@@ -8,25 +8,24 @@
     "commander": "^2.20.3",
     "source-map": "^0.6.1",
     "source-map-support": "^0.5.13",
-    "terser": "^4.3.9"
+    "terser": "^4.3.9",
+    "lodash": "^4.17.15",
+    "standard-version": "^7.0.0"
   },
   "scripts": {
     "build": "terser src/index.js -c -o index.js",
     "test": "npm run build && node test.js",
-    "release": "npm run test && npm version patch && npm pub"
+    "release": "npm run test && standard-version && npm pub"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://any86@github.com/any86/arrayToTree.git"
+    "url": "git+https://any86@github.com/any86/arr2tree.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/any86/arrayToTree/issues"
+    "url": "https://github.com/any86/arr2tree/issues"
   },
-  "homepage": "https://github.com/any86/arrayToTree#readme",
-  "dependencies": {
-    "lodash": "^4.17.15"
-  }
+  "homepage": "https://github.com/any86/arr2tree#readme"
 }
