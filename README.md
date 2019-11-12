@@ -1,4 +1,8 @@
-# arr2tree
+# arr2tree [![NPM Version][npm-image]][npm-url] 
+
+[npm-image]: https://badgen.net/npm/v/arr2tree
+[npm-url]: https://npmjs.org/package/arr2tree
+
 🌲 数组转树
 
 ## 安装
