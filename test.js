@@ -1,4 +1,4 @@
-const arr2tree = require('./index');
+const arr2tree = require('./dist/index.js');
 const isEqual = require('lodash/isEqual')
 const array = [{
         id: 1,

@@ -2,18 +2,17 @@
   "name": "arr2tree",
   "version": "0.0.5",
   "description": "数组转树🌲",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "devDependencies": {
-    "buffer-from": "^1.1.1",
-    "commander": "^2.20.3",
-    "source-map": "^0.6.1",
-    "source-map-support": "^0.5.13",
+    "standard-version": "^7.0.0",
     "terser": "^4.3.9",
-    "lodash": "^4.17.15",
-    "standard-version": "^7.0.0"
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
   },
   "scripts": {
-    "build": "terser src/index.js -c -o index.js",
+    "build:min": "tsc && terser dist/index.js -c -o dist/index.min.js",
+    "build": "tsc",
     "test": "npm run build && node test.js",
     "release": "npm run test && standard-version && npm pub"
   },
@@ -27,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/any86/arr2tree/issues"
   },
-  "homepage": "https://github.com/any86/arr2tree#readme"
+  "homepage": "https://github.com/any86/arr2tree#readme",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
 }
