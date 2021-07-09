@@ -89,17 +89,7 @@ arr2tree(arr, {
 });
 ```
 
-### 自定义根节点的判断条件
-默认情况下arr2tree通过判断"节点上的pid属性是否为空"来区分根/子节点, 但是有时候后端给我们的数据并非使用`pid`为空来表示根节点, 这时候我们可通过`assessRoot`来设置判断函数:
-
-```javascript
-// 如果节点的id为0, 那么判定他是根节点
-arr2tree(arr, {
-    assessRoot: node=> 0 === node.pid
-});
-```
-
-### 修改返回节点的数据结构
+### 自定义返回节点结构
 
 ```javascript
 const arr = [{xxid:1, xxorder:1}, {xxid:2,xxpid:1,xxorder:2}];
@@ -122,3 +112,14 @@ arr2tree(arr, {
 //     ]
 // }]
 ```
+
+### 自定义根节点的判断条件
+默认情况下arr2tree通过判断"节点上的pid属性是否为空"来区分根/子节点, 但是有时候后端给我们的数据并非使用`pid`为空来表示根节点, 这时候我们可通过`assessRoot`来设置判断函数:
+
+```javascript
+// 如果节点的id为0, 那么判定他是根节点
+arr2tree(arr, {
+    assessRoot: node=> 0 === node.pid
+});
+```
+
