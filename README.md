@@ -1,4 +1,4 @@
-# arr2tree [![NPM Version][npm-image]][npm-url] 
+# arr2tree [![NPM Version][npm-image]][npm-url] [![Node CI](https://github.com/any86/arr2tree/actions/workflows/nodejs.yml/badge.svg)](https://github.com/any86/arr2tree/actions/workflows/nodejs.yml)
 
 [npm-image]: https://badgen.net/npm/v/arr2tree
 [npm-url]: https://npmjs.org/package/arr2tree
