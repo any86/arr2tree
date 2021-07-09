@@ -14,7 +14,7 @@ export = function (array: Node[], {
     KEY_PID = 'pid',
     KEY_ORDER = 'order',
     assessRoot = void 0,
-    transform = (node: Node, isRoot: boolean): Node => node
+    transform = (node: Node): Node => node
 } = {}) {
     // 默认值
     const _assessRoot = 'function' === typeof assessRoot ? assessRoot : (node: Node) => !!node[KEY_PID];
@@ -29,7 +29,7 @@ export = function (array: Node[], {
         let _node;
         if (_assessRoot && _assessRoot(node)) {
             // 非根节点
-            _node = transform(node, false);
+            _node = transform(node);
             _node.children = node.children;
             nodeMap[pid] = nodeMap[pid] || [];
             if (void 0 !== _node) {
@@ -37,7 +37,7 @@ export = function (array: Node[], {
             }
         } else {
             // 根节点
-            _node = transform(node, true);
+            _node = transform(node);
             _node.children = node.children;
             if (void 0 !== _node) {
                 tree.push(_node);
