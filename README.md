@@ -94,6 +94,7 @@ arr2tree(arr, {
 ```javascript
 const arr = [{xxid:1, xxorder:1}, {xxid:2,xxpid:1,xxorder:2}];
 function transform(node) {
+    // 如果返回undefined, 那么当前节点就不会出现在树中.
     return { key: node.id, pKey:node.pid};
 }
 

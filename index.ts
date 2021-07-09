@@ -14,7 +14,7 @@ export = function (array: Node[], {
     KEY_PID = 'pid',
     KEY_ORDER = 'order',
     assessRoot = void 0,
-    transform = (node: Node): Node => node
+    transform = (node: Node): Node|void => node
 } = {}) {
     // 默认值
     const _assessRoot = 'function' === typeof assessRoot ? assessRoot : (node: Node) => !!node[KEY_PID];
@@ -30,6 +30,7 @@ export = function (array: Node[], {
         if (_assessRoot && _assessRoot(node)) {
             // 非根节点
             _node = transform(node);
+            if(void 0 === _node) continue;
             _node.children = node.children;
             nodeMap[pid] = nodeMap[pid] || [];
             if (void 0 !== _node) {
@@ -38,6 +39,7 @@ export = function (array: Node[], {
         } else {
             // 根节点
             _node = transform(node);
+            if(void 0 === _node) continue;
             _node.children = node.children;
             if (void 0 !== _node) {
                 tree.push(_node);
@@ -57,7 +59,6 @@ export = function (array: Node[], {
     }
 
     tree.sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
-
 
     // 有循环引用, 手动销毁
     nodeMap = null;
