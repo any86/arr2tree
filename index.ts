@@ -9,12 +9,12 @@ type Node = Record<string | number, any>;
  * @param options.transform 控制节点的返回格式
  * @returns 树结构
  */
-export = function (array: any[], {
+export = function (array: Node[], {
     KEY_ID = 'id',
     KEY_PID = 'pid',
     KEY_ORDER = 'order',
     assessRoot = void 0,
-    transform = (node: Node, isRoot: boolean): any => node
+    transform = (node: Node, isRoot: boolean): Node => node
 } = {}) {
     // 默认值
     const _assessRoot = 'function' === typeof assessRoot ? assessRoot : (node: Node) => !!node[KEY_PID];
