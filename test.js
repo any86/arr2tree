@@ -3,7 +3,7 @@ const isEqual = require('lodash/isEqual')
 const array = [{
         id: 1,
         name: '蔬菜',
-        order: 2
+        order: 2,
     },
     {
         id: 2,
@@ -56,3 +56,34 @@ if (!isEqual(comparedTree, tree)) {
 } else {
     console.log('🚀  通过测试!')
 }
+
+
+
+
+// const array2 = [{
+//     xid: 1,
+//     xname: '蔬菜',
+//     order: 2,
+//     pid:-1,
+// },
+// {
+//     xid: 2,
+//     xname: '土豆',
+//     xpid: 1,
+//     order: 2
+// }, {
+//     xid: 3,
+//     xname: '豆角',
+//     xpid: 1,
+//     order: 1
+// }, {
+//     xid: 4,
+//     xname: '水果',
+//     order: 1,
+//     pid:-1,
+// }
+// ];
+
+
+// const tree2 = arr2tree(array2,{KEY_ID:'xid',KEY_PID:'xpid',isRoot:node=>node.pid == -1});
+// console.log(tree2);

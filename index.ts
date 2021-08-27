@@ -5,19 +5,24 @@ type Node = Record<string | number, any>;
  * @param options.KEY_ID 表示唯一性键值(id)
  * @param options.KEY_PID 对应的父id
  * @param options.KEY_ORDER 排序依据的键值
- * @param options.assessRoot 判断是否根节点, 接收一个参数(当前循环的节点)
+ * @param options.isRoot 判断是否根节点, 接收一个参数(当前循环的节点)
  * @param options.transform 控制节点的返回格式
  * @returns 树结构
  */
-export = function (array: Node[], {
-    KEY_ID = 'id',
-    KEY_PID = 'pid',
-    KEY_ORDER = 'order',
-    assessRoot = void 0,
-    transform = (node: Node): Node|void => node
-} = {}) {
+//  (node:Node)=>boolean
+const DEFAULT_OPTIONS = {
+    KEY_ID: 'id',
+    KEY_PID: 'pid',
+    KEY_ORDER: 'order',
+    transform: (node: Node): Node | void => node,
+    isRoot: (node: Node) => void 0 === node[DEFAULT_OPTIONS.KEY_PID]
+}
+
+
+
+export = function (array: Node[], options?: typeof DEFAULT_OPTIONS) {
     // 默认值
-    const _assessRoot = 'function' === typeof assessRoot ? assessRoot : (node: Node) => !!node[KEY_PID];
+    const { KEY_ID, KEY_ORDER, KEY_PID, transform, isRoot } = { ...DEFAULT_OPTIONS, ...options };
 
     const tree = [];
     let nodeMap: Record<string, Node[]> | null = {};
@@ -27,22 +32,22 @@ export = function (array: Node[], {
         const pid = node[KEY_PID];
 
         let _node;
-        if (_assessRoot && _assessRoot(node)) {
+        if (isRoot(node)) {
+            // 根节点
+            _node = transform(node);
+            if (void 0 === _node) continue;
+            _node.children = node.children;
+            if (void 0 !== _node) {
+                tree.push(_node);
+            }
+        } else {
             // 非根节点
             _node = transform(node);
-            if(void 0 === _node) continue;
+            if (void 0 === _node) continue;
             _node.children = node.children;
             nodeMap[pid] = nodeMap[pid] || [];
             if (void 0 !== _node) {
                 nodeMap[pid].push(_node);
-            }
-        } else {
-            // 根节点
-            _node = transform(node);
-            if(void 0 === _node) continue;
-            _node.children = node.children;
-            if (void 0 !== _node) {
-                tree.push(_node);
             }
         }
 
