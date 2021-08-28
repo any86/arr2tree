@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.11](https://github.com/any86/arr2tree/compare/v0.0.10...v0.0.11) (2021-08-28)
+
+
+### Bug Fixes
+
+* **type:** 选项类型改为可选 ([ee4b9ac](https://github.com/any86/arr2tree/commit/ee4b9ac324a4208dd7f2006015e20311f02916cd))
+
 ### [0.0.10](https://github.com/any86/arr2tree/compare/v0.0.9...v0.0.10) (2021-08-27)
 
 ### 0.0.9 (2021-08-27)
