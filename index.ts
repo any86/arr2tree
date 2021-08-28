@@ -15,10 +15,8 @@ const DEFAULT_OPTIONS = {
     KEY_PID: 'pid',
     KEY_ORDER: 'order',
     transform: (node: Node): Node | void => node,
-    isRoot: (node: Node) => void 0 === node[DEFAULT_OPTIONS.KEY_PID]
+    isRoot: (node: Node) => !node[DEFAULT_OPTIONS.KEY_PID]
 }
-
-
 
 export = function (array: Node[], options?: Partial<typeof DEFAULT_OPTIONS>) {
     // 默认值
