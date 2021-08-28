@@ -20,7 +20,7 @@ const DEFAULT_OPTIONS = {
 
 
 
-export = function (array: Node[], options?: typeof DEFAULT_OPTIONS) {
+export = function (array: Node[], options?: Partial<typeof DEFAULT_OPTIONS>) {
     // 默认值
     const { KEY_ID, KEY_ORDER, KEY_PID, transform, isRoot } = { ...DEFAULT_OPTIONS, ...options };
 
