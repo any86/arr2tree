@@ -1,6 +1,6 @@
 {
   "name": "arr2tree",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "数组转树🌲",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,6 +14,7 @@
   "scripts": {
     "build:min": "tsc && terser dist/index.js -c -o dist/index.min.js",
     "build": "tsc",
+    "dev": "tsc -w",
     "test": "npm run build && node test.js",
     "release": "npm run build && npm run test && standard-version && npm pub"
   },

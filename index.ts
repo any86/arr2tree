@@ -1,5 +1,4 @@
-export type Node = Record<string | number, any>;
-
+type Node = Record<string | number, any>;
 /**
  * 数组转树
  * @param 输入数组
@@ -16,61 +15,63 @@ const DEFAULT_OPTIONS = {
     KEY_PID: 'pid',
     KEY_ORDER: 'order',
     KEY_CHILDREN: 'children',
-    transform: (node: Node): Node | void => node,
-    isRoot: (node: Node) => void 0 !== node[DEFAULT_OPTIONS.KEY_PID]
+    transform: (node: Node): Node => node,
+    isRoot: (node: Node) => !node[DEFAULT_OPTIONS.KEY_PID]
 }
 
 export default function (array: Node[], options?: Partial<typeof DEFAULT_OPTIONS>) {
     // 默认值
-    const { KEY_ID, KEY_ORDER, KEY_PID, KEY_CHILDREN, transform, isRoot } = { ...DEFAULT_OPTIONS, ...options };
+    const { KEY_ID, KEY_ORDER, KEY_CHILDREN, KEY_PID, transform, isRoot } = { ...DEFAULT_OPTIONS, ...options };
 
-    // 目标结果
     const tree = [];
-    // pid -> childNode 映射
-    let childNodeMap: Record<string | number, Node[]> | null = {};
-    // 遍历
+    let pidChildrenMap: Record<string, Node[]> | null = {};
+
     for (const node of array) {
         const { [KEY_ID]: id, [KEY_PID]: pid } = node;
-        // 指针
         const currentNode = transform(node);
         if (void 0 === currentNode) continue;
 
-        // currentNode[KEY_CHILDREN] = node[KEY_CHILDREN];
-
         if (isRoot(node)) {
             // 根节点
-            tree.push(currentNode);
+            if (void 0 !== currentNode) {
+                tree.push(currentNode);
+            }
         } else {
             // 非根节点
-            if (void 0 === childNodeMap[pid]) {
-                childNodeMap[pid] = [];
+            if (void 0 === pidChildrenMap[pid]) {
+                pidChildrenMap[pid] = []
             }
-            childNodeMap[pid].push(currentNode);
+
+            // if (void 0 !== currentNode) {
+            pidChildrenMap[pid].push(currentNode);
+            // }
         }
 
-        if (void 0 === childNodeMap[id]) {
-            childNodeMap[id] = [];
+        // 用每个节点的id做map
+        if (void 0 === pidChildrenMap[id]) {
+            pidChildrenMap[id] = [];
         }
-        currentNode[KEY_CHILDREN] = childNodeMap[id];
+
+        // 让每个节点的children指向pidChildrenMap中的值
+        currentNode[KEY_CHILDREN] = pidChildrenMap[id];
     }
 
-    // 删除值为空的children字段
-    for (const index in array) {
-        if (0 === array[index].children.length) {
-            delete array[index].children
+    // 删除空的children字段
+    for (const node of array) {
+        if (0 === node.children.length) {
+            delete node[KEY_CHILDREN]
         }
     }
 
     // 排序
-    if (void 0 !== tree[0][KEY_ORDER]) {
-        for (const pid in childNodeMap) {
-            if (0 >= childNodeMap[pid].length) continue;
-            childNodeMap[pid].sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
-        }
-        tree.sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
+    for (const key in pidChildrenMap) {
+        if (0 >= pidChildrenMap[key].length) continue;
+        pidChildrenMap[key].sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
     }
+    tree.sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
+
 
     // 有循环引用, 手动销毁
-    childNodeMap = null;
+    pidChildrenMap = null;
     return tree;
 };
