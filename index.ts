@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS = {
     KEY_PID: 'pid',
     KEY_ORDER: 'order',
     KEY_CHILDREN: 'children',
-    transform: (node: Node): Node|void => node,
+    transform: (node: Node): Node | void => node,
     isRoot: (node: Node) => !node[DEFAULT_OPTIONS.KEY_PID]
 }
 
@@ -24,7 +24,7 @@ export default function (array: Node[], options?: Partial<typeof DEFAULT_OPTIONS
     const { KEY_ID, KEY_ORDER, KEY_CHILDREN, KEY_PID, transform, isRoot } = { ...DEFAULT_OPTIONS, ...options };
 
     const tree = [];
-    let pidChildrenMap: Record<string, Node[]> | null = {};
+    let pidAndChildrenMap: Record<string, Node[]> | null = {};
 
     for (const node of array) {
         const { [KEY_ID]: id, [KEY_PID]: pid } = node;
@@ -38,23 +38,22 @@ export default function (array: Node[], options?: Partial<typeof DEFAULT_OPTIONS
             }
         } else {
             // 非根节点
-            if (void 0 === pidChildrenMap[pid]) {
-                pidChildrenMap[pid] = []
+            if (void 0 === pidAndChildrenMap[pid]) {
+                pidAndChildrenMap[pid] = []
             }
-            
-            // 可以通过transform返回undefined来过滤节点
-            if (void 0 !== currentNode) {
-                pidChildrenMap[pid].push(currentNode);
-            }
+
+            // if (void 0 !== currentNode) {
+            pidAndChildrenMap[pid].push(currentNode);
+            // }
         }
 
         // 用每个节点的id做map
-        if (void 0 === pidChildrenMap[id]) {
-            pidChildrenMap[id] = [];
+        if (void 0 === pidAndChildrenMap[id]) {
+            pidAndChildrenMap[id] = [];
         }
 
         // 让每个节点的children指向pidChildrenMap中的值
-        currentNode[KEY_CHILDREN] = pidChildrenMap[id];
+        currentNode[KEY_CHILDREN] = pidAndChildrenMap[id];
     }
 
     // 删除空的children字段
@@ -65,14 +64,14 @@ export default function (array: Node[], options?: Partial<typeof DEFAULT_OPTIONS
     }
 
     // 排序
-    for (const key in pidChildrenMap) {
-        if (0 >= pidChildrenMap[key].length) continue;
-        pidChildrenMap[key].sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
+    for (const key in pidAndChildrenMap) {
+        if (0 >= pidAndChildrenMap[key].length) continue;
+        pidAndChildrenMap[key].sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
     }
     tree.sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
 
 
     // 有循环引用, 手动销毁
-    pidChildrenMap = null;
+    pidAndChildrenMap = null;
     return tree;
 };
