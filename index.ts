@@ -1,4 +1,5 @@
-type Node = Record<string | number, any>;
+export type Node = Record<string | number, any>;
+
 /**
  * 数组转树
  * @param 输入数组
@@ -14,56 +15,62 @@ const DEFAULT_OPTIONS = {
     KEY_ID: 'id',
     KEY_PID: 'pid',
     KEY_ORDER: 'order',
+    KEY_CHILDREN: 'children',
     transform: (node: Node): Node | void => node,
-    isRoot: (node: Node) => !node[DEFAULT_OPTIONS.KEY_PID]
+    isRoot: (node: Node) => void 0 !== node[DEFAULT_OPTIONS.KEY_PID]
 }
 
-export = function (array: Node[], options?: Partial<typeof DEFAULT_OPTIONS>) {
+export default function (array: Node[], options?: Partial<typeof DEFAULT_OPTIONS>) {
     // 默认值
-    const { KEY_ID, KEY_ORDER, KEY_PID, transform, isRoot } = { ...DEFAULT_OPTIONS, ...options };
+    const { KEY_ID, KEY_ORDER, KEY_PID, KEY_CHILDREN, transform, isRoot } = { ...DEFAULT_OPTIONS, ...options };
 
+    // 目标结果
     const tree = [];
-    let nodeMap: Record<string, Node[]> | null = {};
-
+    // pid -> childNode 映射
+    let childNodeMap: Record<string | number, Node[]> | null = {};
+    // 遍历
     for (const node of array) {
-        const id = node[KEY_ID];
-        const pid = node[KEY_PID];
+        const { [KEY_ID]: id, [KEY_PID]: pid } = node;
+        // 指针
+        const currentNode = transform(node);
+        if (void 0 === currentNode) continue;
 
-        let _node;
+        // currentNode[KEY_CHILDREN] = node[KEY_CHILDREN];
+
         if (isRoot(node)) {
             // 根节点
-            _node = transform(node);
-            if (void 0 === _node) continue;
-            _node.children = node.children;
-            if (void 0 !== _node) {
-                tree.push(_node);
-            }
+            tree.push(currentNode);
         } else {
             // 非根节点
-            _node = transform(node);
-            if (void 0 === _node) continue;
-            _node.children = node.children;
-            nodeMap[pid] = nodeMap[pid] || [];
-            if (void 0 !== _node) {
-                nodeMap[pid].push(_node);
+            if (void 0 === childNodeMap[pid]) {
+                childNodeMap[pid] = [];
             }
+            childNodeMap[pid].push(currentNode);
         }
 
-        if (undefined === nodeMap[id]) {
-            nodeMap[id] = [];
+        if (void 0 === childNodeMap[id]) {
+            childNodeMap[id] = [];
         }
-
-        _node.children = nodeMap[id];
+        currentNode[KEY_CHILDREN] = childNodeMap[id];
     }
+
+    // 删除值为空的children字段
+    for (const index in array) {
+        if (0 === array[index].children.length) {
+            delete array[index].children
+        }
+    }
+
     // 排序
-    for (const key in nodeMap) {
-        if (0 >= nodeMap[key].length) continue;
-        nodeMap[key].sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
+    if (void 0 !== tree[0][KEY_ORDER]) {
+        for (const pid in childNodeMap) {
+            if (0 >= childNodeMap[pid].length) continue;
+            childNodeMap[pid].sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
+        }
+        tree.sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
     }
-
-    tree.sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
 
     // 有循环引用, 手动销毁
-    nodeMap = null;
+    childNodeMap = null;
     return tree;
 };
