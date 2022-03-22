@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS = {
     KEY_PID: 'pid',
     KEY_ORDER: 'order',
     KEY_CHILDREN: 'children',
-    transform: (node: Node): Node => node,
+    transform: (node: Node): Node|void => node,
     isRoot: (node: Node) => !node[DEFAULT_OPTIONS.KEY_PID]
 }
 
@@ -41,10 +41,11 @@ export default function (array: Node[], options?: Partial<typeof DEFAULT_OPTIONS
             if (void 0 === pidChildrenMap[pid]) {
                 pidChildrenMap[pid] = []
             }
-
-            // if (void 0 !== currentNode) {
-            pidChildrenMap[pid].push(currentNode);
-            // }
+            
+            // 可以通过transform返回undefined来过滤节点
+            if (void 0 !== currentNode) {
+                pidChildrenMap[pid].push(currentNode);
+            }
         }
 
         // 用每个节点的id做map
