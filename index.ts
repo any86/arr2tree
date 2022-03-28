@@ -1,3 +1,4 @@
+import quickSort from '@any86/quick-sort'
 type Node = Record<string | number, any>;
 /**
  * 数组转树
@@ -19,12 +20,15 @@ const DEFAULT_OPTIONS = {
     isRoot: (node: Node) => !node[DEFAULT_OPTIONS.KEY_PID]
 }
 
+
+
+type NodeMap = Record<string, Node[]>;
 export default function (array: Node[], options?: Partial<typeof DEFAULT_OPTIONS>) {
     // 默认值
     const { KEY_ID, KEY_ORDER, KEY_CHILDREN, KEY_PID, transform, isRoot } = { ...DEFAULT_OPTIONS, ...options };
 
-    const tree = [];
-    let pidAndChildrenMap: Record<string, Node[]> | null = {};
+    let tree = [];
+    let pidAndChildrenMap: NodeMap | null = {};
 
     for (const node of array) {
         const { [KEY_ID]: id, [KEY_PID]: pid } = node;
@@ -64,11 +68,14 @@ export default function (array: Node[], options?: Partial<typeof DEFAULT_OPTIONS
     }
 
     // 排序
-    for (const key in pidAndChildrenMap) {
-        if (0 >= pidAndChildrenMap[key].length) continue;
-        pidAndChildrenMap[key].sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
+    for (const pid in pidAndChildrenMap) {
+        // pidAndChildrenMap[pid].sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
+        pidAndChildrenMap[pid] = quickSort(pidAndChildrenMap[pid], (prev, current) => prev[KEY_ORDER] - current[KEY_ORDER])
+
     }
-    tree.sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
+    // tree.sort((prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
+    tree = quickSort(tree, (prev, current) => prev[KEY_ORDER] - current[KEY_ORDER]);
+
 
 
     // 有循环引用, 手动销毁
