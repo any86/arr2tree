@@ -37,5 +37,5 @@
         "moduleResolution": "node",
     },
     // 入口文件
-    "include": ["index.ts","quickSort.ts"]
+    "include": ["./src/index.ts"]
 }
